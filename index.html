@@ -1,0 +1,120 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lot Size Calculator</title>
+  <style>
+    body {
+      background: linear-gradient(to right, #1f1c2c, #928dab);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      color: #fff;
+    }.calculator {
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+  max-width: 400px;
+  width: 100%;
+  animation: popIn 0.6s ease-out;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 1rem;
+  color: #FFD700;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+input {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  border: none;
+  font-size: 1rem;
+  text-align: center;
+}
+
+button {
+  width: 100%;
+  background-color: #FFD700;
+  color: #000;
+  padding: 0.75rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background-color: #ffc300;
+}
+
+.result {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border-top: 1px solid #fff2;
+  background-color: #ffffff12;
+  border-radius: 12px;
+  opacity: 0;
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.9); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <h1>Lot Size Calculator ✨</h1>
+    <label for="balance">Account Balance ($)</label>
+    <input type="number" id="balance" placeholder="5000"><label for="risk">Risk %</label>
+<input type="number" id="risk" placeholder="1/2 %">
+
+<label for="sl">Stop Loss (pips)</label>
+<input type="number" id="sl" placeholder="10 pips">
+
+<button onclick="calculateLotSize()">Calculate</button>
+
+<div class="result" id="result"></div>
+
+  </div>  <script>
+    function calculateLotSize() {
+      const balance = parseFloat(document.getElementById("balance").value);
+      const riskPercent = parseFloat(document.getElementById("risk").value);
+      const stopLossPips = parseFloat(document.getElementById("sl").value);
+      const pipValuePerLot = 20;
+
+      if (isNaN(balance) || isNaN(riskPercent) || isNaN(stopLossPips)) {
+        document.getElementById('result').style.opacity = 1;
+        document.getElementById("result").innerHTML = "<p>Please fill in all fields correctly.</p>";
+        return;
+      }
+
+      const riskAmount = balance * (riskPercent / 100);
+      const lotSize = riskAmount / (stopLossPips * pipValuePerLot);
+
+      document.getElementById("result").innerHTML = `
+        <p><strong>Account Balance:</strong> $${balance.toFixed(2)}</p>
+        <p><strong>Risk Amount:</strong> $${riskAmount.toFixed(2)} (${riskPercent}%)</p>
+        <p><strong>Stop Loss:</strong> ${stopLossPips} pips</p>
+        <p><strong>Pip Value per 1 Lot:</strong> $${pipValuePerLot}/pip</p>
+        <p><strong>Recommended Lot Size:</strong> <span style="color: #00ffcc; font-weight: bold">${lotSize.toFixed(4)} lots</span></p>
+      `;
+      document.getElementById('result').style.opacity = 1;
+    }
+  </script></body>
+</html>
